@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "今ここボード",
+  "description": "今やること、次やること、今は考えないことを整理するSide Panelボードです。",
+  "version": "0.1.0",
+  "permissions": ["sidePanel", "storage", "tabs", "activeTab"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "action": {
+    "default_title": "今ここボード",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel/index.html"
+  }
+}
