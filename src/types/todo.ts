@@ -10,6 +10,7 @@ export type TodoItem = {
   status: TodoStatus;
   order: number;
   priority: TodoPriority;
+  dueDate?: string;
   dueLabel?: string;
   createdAt: string;
   updatedAt: string;

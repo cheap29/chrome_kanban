@@ -8,6 +8,7 @@ import celebrationMessages from "../data/celebrationMessages.json";
 import { createTodoFromCurrentTab } from "../lib/tabs";
 import { loadTodos, saveTodos } from "../lib/storage";
 import type { TodoItem, TodoPriority, TodoStatus } from "../types/todo";
+import { todayDateInputValue, tomorrowDateInputValue } from "../utils/dueDate";
 import { moveTodo, nextOrderFor, normalizeTodoOrders } from "../utils/reorderTodos";
 
 const MAIN_LIMIT = 3;
@@ -27,7 +28,7 @@ function createInitialTodos(): TodoItem[] {
       status: "main",
       order: 0,
       priority: "important",
-      dueLabel: "今日中",
+      dueDate: todayDateInputValue(),
       createdAt: now,
       updatedAt: now
     },
@@ -37,7 +38,7 @@ function createInitialTodos(): TodoItem[] {
       status: "main",
       order: 1,
       priority: "none",
-      dueLabel: "今日中",
+      dueDate: todayDateInputValue(),
       createdAt: now,
       updatedAt: now
     },
@@ -47,7 +48,7 @@ function createInitialTodos(): TodoItem[] {
       status: "next",
       order: 0,
       priority: "none",
-      dueLabel: "明日",
+      dueDate: tomorrowDateInputValue(),
       createdAt: now,
       updatedAt: now
     },
@@ -214,13 +215,13 @@ export default function App() {
     setDeleteTargetId(null);
   }
 
-  function handleAddTask(input: { title: string; memo?: string; dueLabel?: string; priority: TodoPriority }) {
+  function handleAddTask(input: { title: string; memo?: string; dueDate?: string; priority: TodoPriority }) {
     const now = new Date().toISOString();
     const newTodo: TodoItem = {
       id: createId(),
       title: input.title,
       memo: input.memo,
-      dueLabel: input.dueLabel,
+      dueDate: input.dueDate,
       status: "next",
       order: nextOrderFor(todos, "next"),
       priority: input.priority,
