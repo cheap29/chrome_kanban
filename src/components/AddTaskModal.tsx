@@ -5,14 +5,14 @@ import type { TodoItem, TodoPriority } from "../types/todo";
 type AddTaskModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onAddTask: (input: { title: string; memo?: string; dueLabel?: string; priority: TodoPriority }) => void;
+  onAddTask: (input: { title: string; memo?: string; dueDate?: string; priority: TodoPriority }) => void;
   onAddCurrentTab: () => void;
 };
 
 export default function AddTaskModal({ isOpen, onClose, onAddTask, onAddCurrentTab }: AddTaskModalProps) {
   const [title, setTitle] = useState("");
   const [memo, setMemo] = useState("");
-  const [dueLabel, setDueLabel] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState<TodoItem["priority"]>("none");
   const titleRef = useRef<HTMLInputElement>(null);
 
@@ -32,12 +32,12 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask, onAddCurrentT
     onAddTask({
       title: trimmedTitle,
       memo: memo.trim() || undefined,
-      dueLabel: dueLabel.trim() || undefined,
+      dueDate: dueDate || undefined,
       priority
     });
     setTitle("");
     setMemo("");
-    setDueLabel("");
+    setDueDate("");
     setPriority("none");
   }
 
@@ -81,8 +81,8 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask, onAddCurrentT
 
           <div className="form-row">
             <label>
-              <span>ラベル</span>
-              <input value={dueLabel} onChange={(event) => setDueLabel(event.target.value)} placeholder="今日中" />
+              <span>予定日</span>
+              <input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} />
             </label>
 
             <label>

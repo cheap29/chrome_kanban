@@ -242,6 +242,14 @@ h1 {
   box-shadow: 0 8px 18px rgba(39, 35, 42, 0.08);
 }
 
+.todo-card.is-due-today {
+  border-color: rgba(224, 95, 61, 0.42);
+  background: linear-gradient(90deg, rgba(255, 241, 228, 0.98), rgba(255, 255, 255, 0.98));
+  box-shadow:
+    0 10px 24px rgba(199, 85, 52, 0.15),
+    inset 5px 0 0 #e05f3d;
+}
+
 .todo-card.is-dragging {
   position: relative;
   z-index: 4;
@@ -311,6 +319,11 @@ h1 {
 .todo-labels .important-label {
   color: #8b2945;
   background: #ffe3ea;
+}
+
+.todo-labels .today-label {
+  color: #8a321d;
+  background: #ffe0d4;
 }
 
 .card-actions {

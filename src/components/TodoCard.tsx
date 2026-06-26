@@ -2,6 +2,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 import { ArrowDown, ArrowUp, Check, GripVertical, Trash2 } from "lucide-react";
 import type { TodoItem, TodoStatus } from "../types/todo";
+import { formatDueDateLabel, isTodayDueDate } from "../utils/dueDate";
 
 type TodoCardProps = {
   todo: TodoItem;
@@ -34,9 +35,11 @@ export default function TodoCard({
     transform: CSS.Transform.toString(transform),
     transition
   };
+  const dueDateLabel = formatDueDateLabel(todo.dueDate) ?? todo.dueLabel;
+  const isDueToday = isTodayDueDate(todo.dueDate);
 
   return (
-    <article ref={setNodeRef} style={style} className={`todo-card ${isDragging ? "is-dragging" : ""}`}>
+    <article ref={setNodeRef} style={style} className={`todo-card ${isDragging ? "is-dragging" : ""} ${isDueToday ? "is-due-today" : ""}`}>
       <button className="complete-button" type="button" aria-label={`${todo.title}を完了にする`} onClick={() => onComplete(todo.id)}>
         <Check size={14} strokeWidth={3} aria-hidden="true" />
       </button>
@@ -47,7 +50,7 @@ export default function TodoCard({
         </a>
         {todo.memo && <p className="todo-memo">{todo.memo}</p>}
         <div className="todo-labels" aria-label="タスクラベル">
-          {todo.dueLabel && <span>{todo.dueLabel}</span>}
+          {dueDateLabel && <span className={isDueToday ? "today-label" : undefined}>{dueDateLabel}</span>}
           {todo.priority === "important" && <span className="important-label">重要</span>}
           {todo.url && <span>タブ</span>}
         </div>
