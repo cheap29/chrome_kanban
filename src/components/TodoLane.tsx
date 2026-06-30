@@ -9,12 +9,13 @@ type TodoLaneProps = {
   status: Exclude<TodoStatus, "done">;
   todos: TodoItem[];
   onComplete: (todoId: string) => void;
+  onEditRequest: (todoId: string) => void;
   onDeleteRequest: (todoId: string) => void;
   onMoveByMenu: (todoId: string, status: TodoStatus) => void;
   onReorderByButton: (todoId: string, direction: "up" | "down") => void;
 };
 
-export default function TodoLane({ status, todos, onComplete, onDeleteRequest, onMoveByMenu, onReorderByButton }: TodoLaneProps) {
+export default function TodoLane({ status, todos, onComplete, onEditRequest, onDeleteRequest, onMoveByMenu, onReorderByButton }: TodoLaneProps) {
   const label = laneLabels[status];
   const { setNodeRef, isOver } = useDroppable({ id: status });
   const LaneIcon = status === "main" ? Target : status === "next" ? ListTodo : Moon;
@@ -43,6 +44,7 @@ export default function TodoLane({ status, todos, onComplete, onDeleteRequest, o
               canMoveUp={index > 0}
               canMoveDown={index < todos.length - 1}
               onComplete={onComplete}
+              onEditRequest={onEditRequest}
               onDeleteRequest={onDeleteRequest}
               onMoveByMenu={onMoveByMenu}
               onReorderByButton={onReorderByButton}

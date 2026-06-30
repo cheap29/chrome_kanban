@@ -1,26 +1,38 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import type { TodoItem, TodoPriority } from "../types/todo";
+
+type TaskFormInput = {
+  title: string;
+  memo?: string;
+  dueDate?: string;
+  priority: TodoPriority;
+};
 
 type AddTaskModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onAddTask: (input: { title: string; memo?: string; dueDate?: string; priority: TodoPriority }) => void;
-  onAddCurrentTab: () => void;
+  onSaveTask: (input: TaskFormInput) => void;
+  editingTodo?: TodoItem | null;
 };
 
-export default function AddTaskModal({ isOpen, onClose, onAddTask, onAddCurrentTab }: AddTaskModalProps) {
+export default function AddTaskModal({ isOpen, onClose, onSaveTask, editingTodo }: AddTaskModalProps) {
   const [title, setTitle] = useState("");
   const [memo, setMemo] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState<TodoItem["priority"]>("none");
   const titleRef = useRef<HTMLInputElement>(null);
+  const isEditing = Boolean(editingTodo);
 
   useEffect(() => {
     if (isOpen) {
+      setTitle(editingTodo?.title ?? "");
+      setMemo(editingTodo?.memo ?? "");
+      setDueDate(editingTodo?.dueDate ?? "");
+      setPriority(editingTodo?.priority ?? "none");
       window.setTimeout(() => titleRef.current?.focus(), 80);
     }
-  }, [isOpen]);
+  }, [editingTodo, isOpen]);
 
   if (!isOpen) return null;
 
@@ -29,16 +41,12 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask, onAddCurrentT
     const trimmedTitle = title.trim();
     if (!trimmedTitle) return;
 
-    onAddTask({
+    onSaveTask({
       title: trimmedTitle,
       memo: memo.trim() || undefined,
       dueDate: dueDate || undefined,
       priority
     });
-    setTitle("");
-    setMemo("");
-    setDueDate("");
-    setPriority("none");
   }
 
   return (
@@ -51,20 +59,9 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask, onAddCurrentT
         onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="modal-header">
-          <h2 id="add-task-title">タスクを追加</h2>
+          <h2 id="add-task-title">{isEditing ? "タスクを編集" : "タスクを追加"}</h2>
           <button className="icon-button" type="button" aria-label="閉じる" onClick={onClose}>
             <X size={20} aria-hidden="true" />
-          </button>
-        </div>
-
-        <div className="quick-actions" aria-label="追加方法">
-          <button type="button" onClick={() => titleRef.current?.focus()}>
-            <Plus size={18} aria-hidden="true" />
-            <span>新しいタスク</span>
-          </button>
-          <button type="button" onClick={onAddCurrentTab}>
-            <Plus size={18} aria-hidden="true" />
-            <span>今のタブをタスクにする</span>
           </button>
         </div>
 
@@ -99,7 +96,7 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask, onAddCurrentT
               キャンセル
             </button>
             <button className="primary-button" type="submit">
-              追加
+              {isEditing ? "保存" : "追加"}
             </button>
           </div>
         </form>

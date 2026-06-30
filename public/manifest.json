@@ -3,7 +3,7 @@
   "name": "今ここボード",
   "description": "今やること、次やること、今は考えないことを整理するSide Panelボードです。",
   "version": "0.1.0",
-  "permissions": ["sidePanel", "storage", "tabs", "activeTab"],
+  "permissions": ["sidePanel", "storage"],
   "background": {
     "service_worker": "background.js",
     "type": "module"
