@@ -104,9 +104,9 @@ h1 {
 
 .floating-add-button svg,
 .icon-button svg,
-.quick-actions svg,
 .complete-button svg,
 .order-buttons svg,
+.edit-button svg,
 .delete-button svg,
 .drag-handle svg,
 .confetti svg {
@@ -118,10 +118,10 @@ h1 {
 .secondary-button:focus-visible,
 .icon-button:focus-visible,
 .complete-button:focus-visible,
+.edit-button:focus-visible,
 .delete-button:focus-visible,
 .danger-button:focus-visible,
-.drag-handle:focus-visible,
-.quick-actions button:focus-visible {
+.drag-handle:focus-visible {
   outline: 3px solid rgba(64, 104, 214, 0.42);
   outline-offset: 3px;
 }
@@ -363,6 +363,22 @@ h1 {
   opacity: 0.35;
 }
 
+.edit-button {
+  display: grid;
+  width: 38px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  color: #3f5f8f;
+  background: #eef5ff;
+}
+
+.edit-button:hover {
+  color: #fff;
+  background: #3f72c8;
+}
+
 .delete-button {
   display: grid;
   width: 38px;
@@ -480,29 +496,10 @@ h1 {
   background: #f0edf5;
 }
 
-.quick-actions {
-  display: grid;
-  gap: 8px;
-  margin: 16px 0;
-}
-
-.quick-actions button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 42px;
-  border: 1px solid rgba(74, 72, 120, 0.16);
-  border-radius: 8px;
-  padding: 0 12px;
-  color: #37305e;
-  background: #f5f6ff;
-  font-weight: 700;
-  text-align: left;
-}
-
 .task-form {
   display: grid;
   gap: 12px;
+  margin-top: 16px;
 }
 
 .task-form label {
@@ -698,7 +695,7 @@ h1 {
 
   .card-actions {
     grid-column: 2;
-    grid-template-columns: 1fr auto auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto auto auto;
     justify-items: stretch;
   }
 

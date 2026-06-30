@@ -1,6 +1,6 @@
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
-import { ArrowDown, ArrowUp, Check, GripVertical, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Check, GripVertical, Pencil, Trash2 } from "lucide-react";
 import type { TodoItem, TodoStatus } from "../types/todo";
 import { formatDueDateLabel, isTodayDueDate } from "../utils/dueDate";
 
@@ -9,6 +9,7 @@ type TodoCardProps = {
   canMoveDown: boolean;
   canMoveUp: boolean;
   onComplete: (todoId: string) => void;
+  onEditRequest: (todoId: string) => void;
   onDeleteRequest: (todoId: string) => void;
   onMoveByMenu: (todoId: string, status: TodoStatus) => void;
   onReorderByButton: (todoId: string, direction: "up" | "down") => void;
@@ -19,6 +20,7 @@ export default function TodoCard({
   canMoveDown,
   canMoveUp,
   onComplete,
+  onEditRequest,
   onDeleteRequest,
   onMoveByMenu,
   onReorderByButton
@@ -74,6 +76,9 @@ export default function TodoCard({
             <ArrowDown size={16} strokeWidth={2.4} aria-hidden="true" />
           </button>
         </div>
+        <button className="edit-button" type="button" aria-label={`${todo.title}を編集`} onClick={() => onEditRequest(todo.id)}>
+          <Pencil size={16} strokeWidth={2.4} aria-hidden="true" />
+        </button>
         <button className="delete-button" type="button" aria-label={`${todo.title}を削除`} onClick={() => onDeleteRequest(todo.id)}>
           <Trash2 size={17} strokeWidth={2.4} aria-hidden="true" />
         </button>

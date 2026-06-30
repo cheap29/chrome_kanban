@@ -5,7 +5,6 @@ import FloatingAddButton from "../components/FloatingAddButton";
 import Header from "../components/Header";
 import TodoBoard from "../components/TodoBoard";
 import celebrationMessages from "../data/celebrationMessages.json";
-import { createTodoFromCurrentTab } from "../lib/tabs";
 import { loadTodos, saveTodos } from "../lib/storage";
 import type { TodoItem, TodoPriority, TodoStatus } from "../types/todo";
 import { todayDateInputValue, tomorrowDateInputValue } from "../utils/dueDate";
@@ -83,6 +82,7 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState(celebrationMessages[0] ?? "おめでと！");
   const [errorMessage, setErrorMessage] = useState("");
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [editingTodoId, setEditingTodoId] = useState<string | null>(null);
   const initializedRef = useRef(false);
   const toastTimerRef = useRef<number | null>(null);
   const fadeTimerRef = useRef<number | null>(null);
@@ -115,6 +115,7 @@ export default function App() {
 
   const activeTodos = useMemo(() => todos.filter((todo) => todo.status !== "done"), [todos]);
   const deleteTargetTodo = useMemo(() => todos.find((todo) => todo.id === deleteTargetId), [deleteTargetId, todos]);
+  const editingTodo = useMemo(() => todos.find((todo) => todo.id === editingTodoId) ?? null, [editingTodoId, todos]);
 
   function showError(message: string) {
     setErrorMessage(message);
@@ -204,6 +205,21 @@ export default function App() {
     setDeleteTargetId(todoId);
   }
 
+  function handleEditRequest(todoId: string) {
+    setEditingTodoId(todoId);
+    setIsModalOpen(true);
+  }
+
+  function handleOpenAddTask() {
+    setEditingTodoId(null);
+    setIsModalOpen(true);
+  }
+
+  function handleCloseTaskModal() {
+    setIsModalOpen(false);
+    setEditingTodoId(null);
+  }
+
   function handleCancelDelete() {
     setDeleteTargetId(null);
   }
@@ -215,8 +231,29 @@ export default function App() {
     setDeleteTargetId(null);
   }
 
-  function handleAddTask(input: { title: string; memo?: string; dueDate?: string; priority: TodoPriority }) {
+  function handleSaveTask(input: { title: string; memo?: string; dueDate?: string; priority: TodoPriority }) {
     const now = new Date().toISOString();
+
+    if (editingTodoId) {
+      setTodos((currentTodos) =>
+        currentTodos.map((todo) =>
+          todo.id === editingTodoId
+            ? {
+                ...todo,
+                title: input.title,
+                memo: input.memo,
+                dueDate: input.dueDate,
+                dueLabel: input.dueDate ? undefined : todo.dueLabel,
+                priority: input.priority,
+                updatedAt: now
+              }
+            : todo
+        )
+      );
+      handleCloseTaskModal();
+      return;
+    }
+
     const newTodo: TodoItem = {
       id: createId(),
       title: input.title,
@@ -230,18 +267,7 @@ export default function App() {
     };
 
     setTodos((currentTodos) => normalizeTodoOrders([...currentTodos, newTodo]));
-    setIsModalOpen(false);
-  }
-
-  async function handleAddCurrentTab() {
-    const tabTodo = await createTodoFromCurrentTab(nextOrderFor(todos, "next"));
-    if (!tabTodo) {
-      showError("今のタブを取得できませんでした。");
-      return;
-    }
-
-    setTodos((currentTodos) => normalizeTodoOrders([...currentTodos, tabTodo]));
-    setIsModalOpen(false);
+    handleCloseTaskModal();
   }
 
   if (isLoading) {
@@ -256,20 +282,21 @@ export default function App() {
   return (
     <div className="app-shell">
       <Header />
-      <FloatingAddButton onClick={() => setIsModalOpen(true)} />
+      <FloatingAddButton onClick={handleOpenAddTask} />
       <TodoBoard
         todos={activeTodos}
         onDropTodo={handleDropTodo}
         onComplete={handleComplete}
+        onEditRequest={handleEditRequest}
         onDeleteRequest={handleDeleteRequest}
         onMoveByMenu={handleMoveByMenu}
         onReorderByButton={handleReorderByButton}
       />
       <AddTaskModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAddTask={handleAddTask}
-        onAddCurrentTab={handleAddCurrentTab}
+        onClose={handleCloseTaskModal}
+        onSaveTask={handleSaveTask}
+        editingTodo={editingTodo}
       />
       <CelebrationToast visible={toastVisible} fading={toastFading} message={toastMessage} />
       {deleteTargetTodo && (

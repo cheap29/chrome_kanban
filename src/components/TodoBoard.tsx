@@ -11,12 +11,13 @@ type TodoBoardProps = {
   todos: TodoItem[];
   onDropTodo: (activeId: string, targetStatus: TodoStatus, overId?: string) => void;
   onComplete: (todoId: string) => void;
+  onEditRequest: (todoId: string) => void;
   onDeleteRequest: (todoId: string) => void;
   onMoveByMenu: (todoId: string, status: TodoStatus) => void;
   onReorderByButton: (todoId: string, direction: "up" | "down") => void;
 };
 
-export default function TodoBoard({ todos, onDropTodo, onComplete, onDeleteRequest, onMoveByMenu, onReorderByButton }: TodoBoardProps) {
+export default function TodoBoard({ todos, onDropTodo, onComplete, onEditRequest, onDeleteRequest, onMoveByMenu, onReorderByButton }: TodoBoardProps) {
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: { distance: 6 }
@@ -54,6 +55,7 @@ export default function TodoBoard({ todos, onDropTodo, onComplete, onDeleteReque
             status={status}
             todos={sortTodos(todos.filter((todo) => todo.status === status))}
             onComplete={onComplete}
+            onEditRequest={onEditRequest}
             onDeleteRequest={onDeleteRequest}
             onMoveByMenu={onMoveByMenu}
             onReorderByButton={onReorderByButton}
