@@ -3,6 +3,7 @@ import AddTaskModal from "../components/AddTaskModal";
 import CelebrationToast from "../components/CelebrationToast";
 import FloatingAddButton from "../components/FloatingAddButton";
 import Header from "../components/Header";
+import TimeCalendarBar from "../components/TimeCalendarBar";
 import TodoBoard from "../components/TodoBoard";
 import celebrationMessages from "../data/celebrationMessages.json";
 import { loadTodos, saveTodos } from "../lib/storage";
@@ -273,6 +274,7 @@ export default function App() {
   if (isLoading) {
     return (
       <div className="app-shell">
+        <TimeCalendarBar />
         <Header />
         <p className="loading-message">読み込み中...</p>
       </div>
@@ -281,8 +283,11 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Header />
-      <FloatingAddButton onClick={handleOpenAddTask} />
+      <TimeCalendarBar />
+      <div className="header-with-add">
+        <Header />
+        <FloatingAddButton onClick={handleOpenAddTask} />
+      </div>
       <TodoBoard
         todos={activeTodos}
         onDropTodo={handleDropTodo}
