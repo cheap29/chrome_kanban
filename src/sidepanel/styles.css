@@ -43,15 +43,241 @@ button {
 
 .app-shell {
   min-height: 100vh;
-  padding: 20px 14px 84px;
+  padding: 12px 14px 84px;
+}
+
+.time-calendar-bar {
+  margin-bottom: 12px;
+  border: 1px solid rgba(49, 42, 60, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 8px 22px rgba(39, 35, 42, 0.08);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.time-calendar-summary {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 34px;
+  align-items: center;
+  width: 100%;
+  min-height: 72px;
+  gap: 10px;
+  border: 0;
+  padding: 8px 10px;
+  color: #2b2630;
+  background: transparent;
+  text-align: left;
+}
+
+.time-calendar-summary:hover {
+  background: rgba(89, 97, 217, 0.05);
+}
+
+.analog-clock {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border: 2px solid rgba(44, 37, 54, 0.72);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 50%, #fff 0 6px, transparent 7px),
+    linear-gradient(180deg, #fffaf2, #f5fbff);
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.72),
+    0 5px 14px rgba(39, 35, 42, 0.1);
+}
+
+.clock-mark {
+  position: absolute;
+  color: #6b6173;
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.clock-mark-12 {
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.clock-mark-3 {
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+}
+
+.clock-mark-6 {
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.clock-mark-9 {
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+}
+
+.clock-hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  border-radius: 999px;
+  transform-origin: 50% 100%;
+}
+
+.clock-hour-hand {
+  width: 4px;
+  height: 14px;
+  margin-left: -2px;
+  background: #2f2a36;
+}
+
+.clock-minute-hand {
+  width: 3px;
+  height: 19px;
+  margin-left: -1.5px;
+  background: #4b4560;
+}
+
+.clock-second-hand {
+  width: 2px;
+  height: 22px;
+  margin-left: -1px;
+  background: #d84a66;
+}
+
+.second-hand-bunny {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  transform: translateX(-50%);
+}
+
+.second-hand-bunny .bunny-mascot {
+  filter: drop-shadow(0 1px 2px rgba(39, 35, 42, 0.2));
+}
+
+.clock-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #d84a66;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 1px 4px rgba(39, 35, 42, 0.2);
+}
+
+.time-calendar-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.current-time {
+  color: #29242f;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.current-date {
+  color: #6c6373;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.calendar-toggle-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 999px;
+  color: #5c5365;
+  background: #f0edf5;
+}
+
+.time-calendar-panel {
+  border-top: 1px solid rgba(49, 42, 60, 0.08);
+  padding: 10px 10px 12px;
+  background: rgba(250, 249, 255, 0.58);
+}
+
+.calendar-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  color: #3a3342;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.calendar-weekday,
+.calendar-day {
+  display: grid;
+  min-width: 0;
+  height: 28px;
+  place-items: center;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.calendar-weekday {
+  height: 22px;
+  color: #746b7b;
+  font-weight: 800;
+}
+
+.calendar-day {
+  color: #403947;
+  background: rgba(255, 255, 255, 0.78);
+  font-weight: 700;
+}
+
+.calendar-day.is-outside-month {
+  color: #aaa1b2;
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.calendar-day.is-today {
+  color: #fff;
+  background: #5961d9;
+  box-shadow: 0 5px 14px rgba(89, 97, 217, 0.24);
+}
+
+.header-with-add {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .app-header {
+  flex: 1 1 auto;
   display: flex;
+  min-width: 0;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px 70px 18px 4px;
+  padding: 8px 0 18px 4px;
 }
 
 .header-text {
@@ -86,9 +312,7 @@ h1 {
 }
 
 .floating-add-button {
-  position: fixed;
-  top: 24px;
-  right: 20px;
+  flex: 0 0 auto;
   z-index: 100;
   display: grid;
   width: 56px;
@@ -114,6 +338,7 @@ h1 {
 }
 
 .floating-add-button:focus-visible,
+.time-calendar-summary:focus-visible,
 .primary-button:focus-visible,
 .secondary-button:focus-visible,
 .icon-button:focus-visible,
@@ -682,7 +907,7 @@ h1 {
   }
 
   .app-header {
-    padding-right: 62px;
+    padding-right: 0;
   }
 
   h1 {
